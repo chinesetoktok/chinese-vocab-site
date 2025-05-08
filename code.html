@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지영쌤과 함께하는 Hsk 1 급 단어</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <!-- Font Awesome via CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Custom Styles */
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Tesla Red */
+        :root {
+            --tesla-red: #E31937;
+        }
+
+        .highlight-red {
+            color: var(--tesla-red);
+        }
+        .border-highlight {
+            border-color: var(--tesla-red);
+        }
+        .bg-highlight-gradient {
+             background: linear-gradient(to bottom, var(--tesla-red), rgba(227, 25, 55, 0.3));
+             /* background: linear-gradient(to bottom, var(--tesla-red), #000000); */
+             /* Using transparency gradient */
+        }
+         .bg-highlight-gradient-solid {
+             background-color: var(--tesla-red);
+         }
+
+        /* Bento Grid Card Base Style */
+        .bento-card {
+            background-color: #111; /* Slightly lighter than black */
+            border: 1px solid #333; /* Subtle border */
+            border-radius: 1.5rem; /* More rounded corners */
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+            overflow: hidden; /* Ensure content doesn't overflow rounded corners */
+            position: relative; /* For potential absolute positioning inside */
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .bento-card:hover {
+            background-color: #222;
+            border-color: var(--tesla-red);
+            transform: scale(1.02); /* Subtle grow effect */
+        }
+
+        /* Animation Trigger Class */
+        .bento-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Large Text Styles */
+        .hanzi-large {
+            font-size: clamp(4rem, 10vw, 8rem); /* Responsive font size */
+            font-weight: 600; /* Semi-bold */
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            color: #eee; /* Slightly off-white */
+        }
+
+        .meaning-large {
+            font-size: clamp(2rem, 5vw, 4rem); /* Responsive font size */
+            font-weight: 700; /* Bold */
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        /* Supporting Text Styles */
+        .pinyin-text {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: #aaa; /* Lighter gray */
+            font-weight: 300; /* Light */
+            margin-bottom: 0.25rem;
+        }
+
+         .type-text {
+             font-size: clamp(0.9rem, 2vw, 1.1rem);
+             color: #888; /* Medium gray */
+             font-weight: 400;
+             margin-bottom: 1.5rem;
+         }
+
+        /* Icon Styles */
+        .icon-large {
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: var(--tesla-red);
+            opacity: 0.8;
+            margin-top: auto; /* Push icon towards the bottom */
+            align-self: flex-end; /* Align icon to the right */
+            transition: transform 0.3s ease;
+        }
+        .bento-card:hover .icon-large {
+            transform: scale(1.1); /* Icon scales on hover */
+        }
+
+         /* Header Style */
+         .header-title {
+             font-size: clamp(2.5rem, 6vw, 5rem);
+             font-weight: 800; /* Extra bold */
+             margin-bottom: 1rem;
+         }
+         .header-subtitle {
+             font-size: clamp(1.2rem, 3vw, 2rem);
+             font-weight: 300;
+             color: #ccc;
+         }
+        .instructor-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--tesla-red);
+            object-fit: cover;
+            box-shadow: 0 0 15px rgba(227, 25, 55, 0.5);
+        }
+
+        /* Footer Style */
+         footer {
+             padding: 3rem 1rem;
+             text-align: center;
+             color: #888;
+         }
+         .footer-highlight {
+             font-size: clamp(1.5rem, 4vw, 2.5rem);
+             font-weight: 600;
+         }
+
+        /* Pinyin Tone Mark Highlighting */
+         .pinyin-text .tone1 { color: var(--tesla-red); font-weight: 500; }
+         .pinyin-text .tone2 { color: #ffa500; font-weight: 500; } /* Orange */
+         .pinyin-text .tone3 { color: #90ee90; font-weight: 500; } /* Light Green */
+         .pinyin-text .tone4 { color: #add8e6; font-weight: 500; } /* Light Blue */
+         .pinyin-text .tone0 { color: #aaa; } /* Neutral/Gray */
+
+        /* Basic icon for words without specific illustrations */
+        .icon-placeholder::before {
+            content: "\f128"; /* Font Awesome question mark */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            display: inline-block;
+        }
+
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <!-- Header Section -->
+    <header class="container mx-auto px-6 py-16 text-center">
+         <div class="flex justify-center items-center mb-8 space-x-6">
+             <img src="https://i.ytimg.com/vi/0Qk9Y7hjsdw/hqdefault.jpg?sqp=-oaymwEcCPYBEIoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA_Qk9D8Lz8jZ_Fz_u7rN5iU4yT9A" alt="지영쌤" class="instructor-img">
+             <div>
+                 <h1 class="header-title highlight-red">HSK 1급 단어</h1>
+                 <p class="header-subtitle">지영쌤과 함께하는</p>
+             </div>
+         </div>
+        <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+            HSK 1급 필수 단어 150개를 원어민 발음과 함께 배워보세요. 단어는 시험뿐만 아니라 기초 회화 실력 향상에도 중요합니다! 스크롤하며 각 단어를 확인해보세요.
+        </p>
+    </header>
+
+    <!-- Main Content - Bento Grid -->
+    <main class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+
+            <!-- Vocabulary Card Template (Repeat for each word) -->
+            <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">爱</p>
+                    <p class="pinyin-text">[<span class="tone4">à</span><span class="tone0">i</span>]</p>
+                    <h2 class="meaning-large highlight-red">사랑하다</h2>
+                    <p class="type-text">(동) 동사</p>
+                </div>
+                <i class="fas fa-heart icon-large"></i>
+            </div>
+
+            <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">八</p>
+                    <p class="pinyin-text">[b<span class="tone1">ā</span>]</p>
+                    <h2 class="meaning-large highlight-red">여덟 (8)</h2>
+                    <p class="type-text">(수) 숫자</p>
+                </div>
+                 <i class="fas fa-fingerprint icon-large"></i> <!-- Representing counting -->
+            </div>
+
+            <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">爸爸</p>
+                    <p class="pinyin-text">[b<span class="tone4">à</span>b<span class="tone0">a</span>]</p>
+                    <h2 class="meaning-large highlight-red">아버지</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                <i class="fas fa-male icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">杯子</p>
+                    <p class="pinyin-text">[b<span class="tone1">ē</span><span class="tone0">i</span>z<span class="tone0">i</span>]</p>
+                    <h2 class="meaning-large highlight-red">컵, 잔</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                 <i class="fas fa-mug-hot icon-large"></i>
+            </div>
+
+            <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">北京</p>
+                    <p class="pinyin-text">[B<span class="tone3">ě</span><span class="tone0">i</span>j<span class="tone1">ī</span>ng]</p>
+                    <h2 class="meaning-large highlight-red">베이징</h2>
+                    <p class="type-text">(명) 명사 (고유명사)</p>
+                </div>
+                 <i class="fas fa-landmark icon-large"></i> <!-- Representing a city/landmark -->
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">本</p>
+                    <p class="pinyin-text">[b<span class="tone3">ě</span>n]</p>
+                    <h2 class="meaning-large highlight-red">권 (책 세는 양사)</h2>
+                    <p class="type-text">(양) 양사</p>
+                </div>
+                 <i class="fas fa-book-open icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">不客气</p>
+                    <p class="pinyin-text">[b<span class="tone4">ú</span>k<span class="tone4">è</span>q<span class="tone0">i</span>]</p>
+                    <h2 class="meaning-large highlight-red">천만에요</h2>
+                    <p class="type-text">관용 표현</p>
+                </div>
+                 <i class="fas fa-handshake-angle icon-large"></i> <!-- Representing politeness -->
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">不</p>
+                    <p class="pinyin-text">[b<span class="tone4">ù</span>]</p>
+                    <h2 class="meaning-large highlight-red">아니다</h2>
+                    <p class="type-text">(부) 부사</p>
+                </div>
+                 <i class="fas fa-times-circle icon-large"></i>
+            </div>
+
+            <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">菜</p>
+                    <p class="pinyin-text">[c<span class="tone4">à</span><span class="tone0">i</span>]</p>
+                    <h2 class="meaning-large highlight-red">요리, 채소</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                 <i class="fas fa-utensils icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">茶</p>
+                    <p class="pinyin-text">[ch<span class="tone2">á</span>]</p>
+                    <h2 class="meaning-large highlight-red">차 (마시는)</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                 <i class="fas fa-leaf icon-large"></i> <!-- Tea leaf -->
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">吃</p>
+                    <p class="pinyin-text">[ch<span class="tone1">ī</span>]</p>
+                    <h2 class="meaning-large highlight-red">먹다</h2>
+                    <p class="type-text">(동) 동사</p>
+                </div>
+                 <i class="fas fa-cookie-bite icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">出租车</p>
+                    <p class="pinyin-text">[ch<span class="tone1">ū</span>z<span class="tone1">ū</span>ch<span class="tone1">ē</span>]</p>
+                    <h2 class="meaning-large highlight-red">택시</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                 <i class="fas fa-taxi icon-large"></i>
+            </div>
+
+            <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">打电话</p>
+                    <p class="pinyin-text">[d<span class="tone3">ǎ</span>di<span class="tone4">à</span>nhu<span class="tone4">à</span>]</p>
+                    <h2 class="meaning-large highlight-red">전화하다</h2>
+                    <p class="type-text">(동) 동사구</p>
+                </div>
+                 <i class="fas fa-phone icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">大</p>
+                    <p class="pinyin-text">[d<span class="tone4">à</span>]</p>
+                    <h2 class="meaning-large highlight-red">크다, 나이가 많다</h2>
+                    <p class="type-text">(형) 형용사</p>
+                </div>
+                 <i class="fas fa-expand-alt icon-large"></i>
+            </div>
+
+            <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">的</p>
+                    <p class="pinyin-text">[d<span class="tone0">e</span>]</p>
+                    <h2 class="meaning-large highlight-red">~의, ~의 것</h2>
+                    <p class="type-text">(조) 조사</p>
+                </div>
+                 <i class="fas fa-link icon-large"></i> <!-- Representing connection/possession -->
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">点</p>
+                    <p class="pinyin-text">[di<span class="tone3">ǎ</span>n]</p>
+                    <h2 class="meaning-large highlight-red">점(시각), 주문하다</h2>
+                    <p class="type-text">(명/동) 명사/동사</p>
+                </div>
+                 <i class="fas fa-clock icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">电脑</p>
+                    <p class="pinyin-text">[di<span class="tone4">à</span>nn<span class="tone3">ǎ</span><span class="tone0">o</span>]</p>
+                    <h2 class="meaning-large highlight-red">컴퓨터</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                 <i class="fas fa-computer icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">电视</p>
+                    <p class="pinyin-text">[di<span class="tone4">à</span>nsh<span class="tone4">ì</span>]</p>
+                    <h2 class="meaning-large highlight-red">텔레비전, TV</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                 <i class="fas fa-tv icon-large"></i>
+            </div>
+
+            <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">电影</p>
+                    <p class="pinyin-text">[di<span class="tone4">à</span>ny<span class="tone3">ǐ</span>ng]</p>
+                    <h2 class="meaning-large highlight-red">영화</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                 <i class="fas fa-film icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">东西</p>
+                    <p class="pinyin-text">[d<span class="tone1">ō</span>ngx<span class="tone0">i</span>]</p>
+                    <h2 class="meaning-large highlight-red">물건, 것</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                 <i class="fas fa-box icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">都</p>
+                    <p class="pinyin-text">[d<span class="tone1">ō</span><span class="tone0">u</span>]</p>
+                    <h2 class="meaning-large highlight-red">모두, 다</h2>
+                    <p class="type-text">(부) 부사</p>
+                </div>
+                 <i class="fas fa-users icon-large"></i> <!-- Representing 'all' -->
+            </div>
+
+            <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">读</p>
+                    <p class="pinyin-text">[d<span class="tone2">ú</span>]</p>
+                    <h2 class="meaning-large highlight-red">읽다</h2>
+                    <p class="type-text">(동) 동사</p>
+                </div>
+                 <i class="fas fa-book-reader icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">对不起</p>
+                    <p class="pinyin-text">[du<span class="tone4">ì</span>buq<span class="tone3">ǐ</span>]</p>
+                    <h2 class="meaning-large highlight-red">미안합니다</h2>
+                    <p class="type-text">관용 표현</p>
+                </div>
+                 <i class="fas fa-person-praying icon-large"></i> <!-- Representing apology -->
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">多</p>
+                    <p class="pinyin-text">[du<span class="tone1">ō</span>]</p>
+                    <h2 class="meaning-large highlight-red">많다</h2>
+                    <p class="type-text">(형) 형용사</p>
+                </div>
+                 <i class="fas fa-plus icon-large"></i> <!-- Representing 'many' -->
+            </div>
+
+            <!-- ... Continue adding cards for all HSK 1 words ... -->
+            <!-- Example for a few more words based on typical HSK 1 list -->
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">多少</p>
+                    <p class="pinyin-text">[du<span class="tone1">ō</span>shao]</p>
+                    <h2 class="meaning-large highlight-red">얼마, 몇</h2>
+                    <p class="type-text">(대) 대명사</p>
+                </div>
+                 <i class="fas fa-calculator icon-large"></i> <!-- Representing quantity/number -->
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">儿子</p>
+                    <p class="pinyin-text">[<span class="tone2">é</span>rz<span class="tone0">i</span>]</p>
+                    <h2 class="meaning-large highlight-red">아들</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                 <i class="fas fa-child icon-large"></i>
+            </div>
+
+            <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">二</p>
+                    <p class="pinyin-text">[<span class="tone4">è</span>r]</p>
+                    <h2 class="meaning-large highlight-red">둘 (2)</h2>
+                    <p class="type-text">(수) 숫자</p>
+                </div>
+                 <i class="fas fa-2 icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">饭馆</p>
+                    <p class="pinyin-text">[f<span class="tone4">à</span>ngu<span class="tone3">ǎ</span>n]</p>
+                    <h2 class="meaning-large highlight-red">식당</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                 <i class="fas fa-store icon-large"></i>
+            </div>
+
+             <div class="bento-card vocab-card">
+                <div>
+                    <p class="hanzi-large">飞机</p>
+                    <p class="pinyin-text">[f<span class="tone1">ē</span><span class="tone0">i</span>j<span class="tone1">ī</span>]</p>
+                    <h2 class="meaning-large highlight-red">비행기</h2>
+                    <p class="type-text">(명) 명사</p>
+                </div>
+                 <i class="fas fa-plane icon-large"></i>
+            </div>
+
+            <!-- Add many more cards here following the pattern -->
+
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="container mx-auto px-6 py-12 text-center">
+        <p class="footer-highlight mb-4"><span class="highlight-red">大家加油！</span> (모두 화이팅!)</p>
+        <p class="text-gray-400">下集见! (다음 편에서 만나요!)</p>
+        <p class="text-sm text-gray-500 mt-8">지영쌤과 함께하는 중국어</p>
+    </footer>
+
+    <!-- JavaScript for Animation Trigger -->
+    <script>
+        const cards = document.querySelectorAll('.vocab-card');
+
+        const observerOptions = {
+            root: null, // relative to document viewport
+            rootMargin: '0px',
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        };
+
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Optional: Unobserve after animation to save resources
+                    // observer.unobserve(entry.target);
+                } else {
+                     // Optional: Remove class if you want animation to repeat on scroll up/down
+                     // entry.target.classList.remove('is-visible');
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        cards.forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+
+</body>
+</html>
